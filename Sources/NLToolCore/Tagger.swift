@@ -31,6 +31,8 @@ public struct Tagger {
         }
 
         public let input: String
+        public let scheme: TagScheme
+        public let unit: TokenUnit
         public let tags: [Tag]
     }
 
@@ -131,6 +133,6 @@ public struct Tagger {
         }
 
         // Return the reuslt object
-        return Result(input: input, tags: tags)
+        return Result(input: input, scheme: self.scheme, unit: self.unit, tags: tags)
     }
 }

@@ -31,6 +31,7 @@ public struct Tokenizer {
         }
 
         public let input: String
+        public let unit: TokenUnit
         public let tokens: [Token]
     }
 
@@ -78,6 +79,6 @@ public struct Tokenizer {
             return results.count != count
         }
 
-        return Result(input: input, tokens: results)
+        return Result(input: input, unit: unit, tokens: results)
     }
 }

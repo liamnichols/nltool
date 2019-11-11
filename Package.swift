@@ -12,10 +12,11 @@ let package = Package(
         .executable(name: "nltool", targets: ["NLTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "5.0.0")
+        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "5.0.0"),
+        .package(url: "https://github.com/scottrhoyt/SwiftyTextTable.git", from: "0.5.0")
     ],
     targets: [
-        .target(name: "NLTool", dependencies: ["SwiftCLI", "NLToolCore"]),
+        .target(name: "NLTool", dependencies: ["SwiftCLI", "SwiftyTextTable", "NLToolCore"]),
         .target(name: "NLToolCore", dependencies: []),
         .testTarget(name: "NLToolCoreTests", dependencies: ["NLToolCore"]),
     ]

@@ -22,6 +22,7 @@
 
 import Foundation
 import SwiftCLI
+import SwiftyTextTable
 import NLToolCore
 
 class TokenizeCommand: FlexibleInputCommand {
@@ -62,12 +63,8 @@ class TokenizeCommand: FlexibleInputCommand {
         // Perform the tokenization
         let result = try tokenizer.tokenize()
 
-        // TODO: Standardise output formatting...
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        let data = try encoder.encode(result)
-        let string = String(data: data, encoding: .utf8)!
-        stdout <<< string
+        // Print the result to stdout using the desired format
+        stdout.print(result, format: outputFormat)
     }
 }
 

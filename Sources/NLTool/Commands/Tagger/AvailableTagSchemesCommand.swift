@@ -32,7 +32,22 @@ extension TaggerCommand {
         let language = Param.Required<Language>(completion: .none)
         
         func execute() throws {
-            stdout <<< Tagger.availableTagSchemes(for: unit.value, in: language.value).joined(separator: "\n")
+            let results = Tagger.availableTagSchemes(for: unit.value, in: language.value)
+            let result = AvailableTagSchemesResult(unit: unit.value, language: language.value, results: results)
+            stdout.print(result, format: outputFormat)
         }
     }
+}
+
+// TODO: Make this nicer
+struct AvailableTagSchemesResult: Outputable {
+    let unit: TokenUnit
+    let language: Language
+    let results: [String]
+
+    var header: String? { nil }
+
+    var columns: [String] { ["Available Tag Schemes for \(unit.rawValue.capitalized) (\(language.rawValue))"] }
+
+    var values: [[CustomStringConvertible]] { results.map({ [$0] }) }
 }

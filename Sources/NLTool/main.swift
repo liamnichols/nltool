@@ -28,5 +28,5 @@ let cli = CLI(
     description: "A CLI interface for Apples NaturalLanguage framework",
     commands: [TokenizeCommand(), TaggerCommand.Group()]
 )
-
+configureJSONOutputOptions(in: cli)
 cli.goAndExit()

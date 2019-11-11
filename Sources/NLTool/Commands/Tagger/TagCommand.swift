@@ -92,12 +92,8 @@ extension TaggerCommand {
             // Perform the tag operation
             let result = try tagger.tag()
 
-            // TODO: Standardise output formatting...
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-            let data = try encoder.encode(result)
-            let string = String(data: data, encoding: .utf8)!
-            stdout <<< string
+            // Print the result to stdout using the desired format
+            stdout.print(result, format: outputFormat)
         }
     }
 }
