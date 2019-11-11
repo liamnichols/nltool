@@ -10,43 +10,80 @@ mint install liamnichols/nltool
 
 ## Usage
 
-### Tokenization
+Use `nltool --help` for a list of commands and options. The two main supported commands are `tokenize` and `tagger tag`.
+
+### Examples
+
+Pipe an input string and tag its contents:
 
 ```
-$ nltool tokenize --help
-
-Usage: nltool tokenize [<input>] [options]
-
-Use this command to tokenize an input string either via the 'input' argument or as stdin.
-
-Examples:
-  nltool tokenize --unit word --language en "Hello World!"
-  echo "Hello Word!" | nltool tokenize --unit word --language en
-  nltool tokenize --unit word --language en < ./hello.txt
-
-Options:
-  -c, --count <value>       The maximum number of tokens to return. Useful for limiting the amount of string that is enumerated
-  -h, --help                Show help information
-  -l, --language <value>    BCP-47 language tag to use (optional)
-  -u, --unit <value>        Unit segmentation to tokenize by. Default is 'word'
+$ curl -s http://whatthecommit.com/index.txt | nltool tagger tag LexicalClass --omit-whitespace --omit-punctuation
++------------------------------------+
+| Tags for Lexicalclass (Word)       |
++------------------------------------+
+| Index | Range   | Tag      | Value |
++-------+---------+----------+-------+
+| 0     | 0..<5   | Adverb   | Never |
+| 1     | 6..<11  | Verb     | gonna |
+| 2     | 12..<16 | Verb     | give  |
+| 3     | 17..<20 | Pronoun  | you   |
+| 4     | 21..<23 | Particle | up    |
++-------+---------+----------+-------+
 ```
 
-### Tagger
+See the built-in tag schemes available for a given token unit and language:
 
 ```
-$ nltool tagger --help  
-
-Usage: nltool tagger <command> [options]
-
-Commands for interfacing with NLTagger
-
-Commands:
-  availableTagSchemes    Lists the default available tag schemes for a given unit and language
-  tag                    Tags the input string against the configured tag schemes
+$ nltool tagger availableTagSchemes word en
++-------------------------------------+
+| Available Tag Schemes for Word (en) |
++-------------------------------------+
+| Language                            |
+| Script                              |
+| TokenType                           |
+| NameType                            |
+| LexicalClass                        |
+| NameTypeOrLexicalClass              |
+| Lemma                               |
++-------------------------------------+
 ```
 
+Output the results in JSON format:
+
 ```
-$ nltool tagger tag --help
+$ nltool tokenize "First sentence. Second Sentence" --unit sentence --json --pretty-print
+{
+  "input" : "First sentence. Second Sentence",
+  "tokens" : [
+    {
+      "attributes" : [
+
+      ],
+      "range" : [
+        0,
+        16
+      ],
+      "value" : "First sentence. "
+    },
+    {
+      "attributes" : [
+
+      ],
+      "range" : [
+        16,
+        31
+      ],
+      "value" : "Second Sentence"
+    }
+  ],
+  "unit" : "sentence"
+}
+```
+
+View help infromation for any command with `--help`:
+
+```
+$ nltool tagger tag --help                                                                   
 
 Usage: nltool tagger tag <scheme> [<input>] [options]
 
@@ -55,10 +92,12 @@ Tags the input string against the configured tag schemes
 Options:
   --join-contractions    Contractions will be returned as one token.
   --join-names           Typically, multiple-word names will be returned as multiple tokens, following the standard tokenization practice of the tagger.
+  --json                 Print output in JSON format
   --omit-other           Omit tokens of type Other (non-linguistic items, such as symbols).
   --omit-punctuation     Omit tokens of type Punctuation (all punctuation).
   --omit-whitespace      Omit tokens of type Whitespace (whitespace of all sorts).
   --omit-words           Omit tokens of type Word (items considered to be words).
+  --pretty-print         Pretty Print JSON output when using --json command
   -h, --help             Show help information
   -u, --unit <value>     Unit segmentation to tokenize by. Default is 'word'
 ```
